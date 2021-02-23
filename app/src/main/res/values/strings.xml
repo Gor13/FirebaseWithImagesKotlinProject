@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FirebaseWithImagesKotlinProject</string>
+    <string name="add_new_location_button">Add New Location Button</string>
+    <string name="add_new_location">Add new Location</string>
+    <string name="name_of_location">Name of location</string>
+    <string name="image_with_location">Image with location</string>
+    <string name="name_of_section">Name of section</string>
+</resources>
