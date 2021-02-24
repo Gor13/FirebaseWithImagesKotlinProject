@@ -1,19 +1,25 @@
-package com.hardzei.firebasewithimageskotlinproject
+package com.hardzei.firebasewithimageskotlinproject.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.hardzei.firebasewithimageskotlinproject.R
+import com.hardzei.firebasewithimageskotlinproject.Section
 import kotlinx.android.synthetic.main.section_item.view.*
 
-class SectionsListAdapter(context: Context?) :
+class SectionsListAdapter(private val context: Context?) :
         RecyclerView.Adapter<SectionsListAdapter.SectionViewHolder>() {
 
-    private val context = context
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var sections: List<Section> = listOf()
+
+    interface AddNewLocationButtonClickListener {
+            fun addNewLocationButtonClick(section: Section)
+    }
+    var addNewLocationButtonClickListener: AddNewLocationButtonClickListener? = null
 
     fun setSections(sections: List<Section>) {
         this.sections = sections
@@ -26,11 +32,16 @@ class SectionsListAdapter(context: Context?) :
     }
 
     override fun onBindViewHolder(holder: SectionViewHolder, position: Int) {
+
         with(holder) {
-            nameOfSectionTextureView.text = sections[position].nameOfSection
+            addNewLocationButton.setOnClickListener {
+               addNewLocationButtonClickListener?.addNewLocationButtonClick(sections[position])
+            }
+            nameOfSectionTV.text = sections[position].nameOfSection
             if (context == null) return
-            val locationsAdapter: ArrayAdapter<Location> = ArrayAdapter(context, android.R.layout.simple_list_item_1, sections[position].listWithLocations)
-            locationsListView.adapter = locationsAdapter
+            val locationsListAdapter = LocationsListAdapter(context)
+            locationsRV.adapter = locationsListAdapter
+            locationsListAdapter.setLocations(sections[position].listWithLocations)
         }
     }
 
@@ -39,8 +50,8 @@ class SectionsListAdapter(context: Context?) :
     }
 
     class SectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nameOfSectionTextureView = itemView.nameOfSectionTV
-       // val nameOfLocationTextureView = itemView.nameOflocationTV
-        val locationsListView = itemView.locationsListView
+        val nameOfSectionTV = itemView.nameOfSectionTV
+        val locationsRV = itemView.locationsRV
+        val addNewLocationButton = itemView.addNewLocationButton
     }
 }

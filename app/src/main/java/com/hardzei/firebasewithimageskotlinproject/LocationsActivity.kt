@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.hardzei.firebasewithimageskotlinproject.adapters.SectionsListAdapter
 import kotlinx.android.synthetic.main.activity_locations.*
 
 private const val TAG = "TEST"
@@ -35,16 +36,26 @@ class LocationsActivity : AppCompatActivity() {
         sectionsListAdapter = SectionsListAdapter(this)
         secionsRecyclerView.adapter = sectionsListAdapter
 
-        // addUser2()
-        getSectionsFromFDB()
 
+        getSectionsFromFDB()
         // getPhotos()
         initListeners()
+        updateSection()
+    }
+
+    private fun updateSection() {
+
     }
 
     private fun initListeners() {
         addSectionFAB.setOnClickListener {
             addNewSection()
+        }
+        sectionsListAdapter.addNewLocationButtonClickListener = object : SectionsListAdapter.AddNewLocationButtonClickListener {
+            override fun addNewLocationButtonClick(section: Section) {
+                Log.d(TAG, "${section}")
+            }
+
         }
     }
 
@@ -60,7 +71,6 @@ class LocationsActivity : AppCompatActivity() {
     }
 
     private fun writeIntoFireStor(uri: Uri?) {
-
         var file = uri
         val riversRef = storageRef.child("images/${file?.lastPathSegment}")
         var uploadTask = riversRef.putFile(file!!)
@@ -96,34 +106,20 @@ class LocationsActivity : AppCompatActivity() {
         db.collection("sections")
                 .get()
                 .addOnSuccessListener { result ->
-                    var list: MutableList<Section> = mutableListOf()
                     for (document in result) {
                         Log.d(TAG, "${document.id} => ${document.data}}")
-//                    var b = document.data.values.toMutableList()
-//                    list.add(Section(document.id, b[1] as String))
+
                     }
-                    val locations = result.documents.map { (it.data!!.values.toMutableList()[0] as ArrayList<*>).map { Location(((it as HashMap<*, *>).values.toMutableList()[0]).toString(), listOf()) } }
-                    Log.d("TEST", locations.toString())
                     val listWithSections = result.map {
                         Section(it.id,
-                                // j03G54IbalNrjc1zmDqF =>  - this is our id in firebase
-                                // {listWithLocations=[{nameOfLication=Name oftion, listWithImages=[]}], - this is our list with locations
-                                // nameOfSection=Name of section1,
-                                // id=-1}} - this is our id into object Section
                                 (it.data.values.toMutableList()[1] as String),
-//                                listOf(Location(((it.data.values.toMutableList()[0]
-//                                        as ArrayList<*>)[0]
-//                                        as HashMap<*, *>)
-//                                        .values.toMutableList()[0].toString(),
-//                                        listOf()))
-                                (it.data.values.toMutableList()[0] as ArrayList<*>).map { Location(((it as HashMap<*, *>).values.toMutableList()[0]).toString(), listOf()) }
-                                //    (it.data.values.toMutableList() as ArrayList<*>).map { (it as HashMap<*,*>).values.toMutableList().map { Location(it.toString(), listOf())  } }[0]
+                                (it.data.values.toMutableList()[0] as ArrayList<*>).map { Location(((it as HashMap<*, *>).values.toMutableList()[0]).toString(), it.values.toMutableList()[1] as List<String>) }
                         )
-                        // {listWithLocations=[{nameOfLication=Name oftion,
-                        // listWithImages=[]}],
-                        // nameOfSection=Name of section1,
-                        // id=-1}}
                     }
+                    // j03G54IbalNrjc1zmDqF =>  - this is our id in firebase
+                    // {listWithLocations=[{nameOfLication=Name oftion, listWithImages=[]}], - this is our list with locations
+                    // nameOfSection=Name of section1,
+                    // id=-1}} - this is our id into object Section
                     sectionsListAdapter.setSections(listWithSections)
                 }
                 .addOnFailureListener { exception ->
@@ -131,32 +127,13 @@ class LocationsActivity : AppCompatActivity() {
                 }
     }
 
-    private fun addUser2() {
-
-        val user = hashMapOf(
-                "first" to "Alan",
-                "middle" to "Mathison",
-                "last" to "Turing",
-                "born" to 1912
-        )
-
-// Add a new document with a generated ID
-        db.collection("users")
-                .add(user)
-                .addOnSuccessListener { documentReference ->
-                    Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-                }
-                .addOnFailureListener { e ->
-                    Log.w(TAG, "Error adding document", e)
-                }
-    }
-
     private fun addNewSection() {
 
-        val newSection = Section("1/0", "Name of section", listOf(Location("Name of Location1", listOf()),
-                Location("Name of Location2", listOf()),
+        val newSection = Section("1/0", "Name of section", listOf(
+                Location("Name of Location1", listOf("image1", "image1", "image1", "image1")),
+                Location("Name of Location2", listOf("image1")),
                 Location("Name of Location3", listOf()),
-                Location("Name of Location4", listOf())))
+                Location("Name of Location4", listOf("image1", "image1"))))
         // Add a new document with a generated ID
         db.collection("sections")
                 .add(newSection)

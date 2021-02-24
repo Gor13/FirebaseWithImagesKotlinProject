@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -9,7 +10,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        app:cardCornerRadius="8dp"
         app:cardElevation="2dp"
         app:cardUseCompatPadding="true">
 
@@ -17,76 +18,28 @@
             android:id="@+id/nameOfSectionTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:layout_gravity="center"
             android:text="@string/name_of_section"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
+        app:cardCornerRadius="8dp"
         app:cardElevation="2dp"
         app:cardUseCompatPadding="true">
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/locationsRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="12">
-                <ListView
-                    android:id="@+id/locationsListView"
-                    android:layout_width="0dp"
-                    android:layout_height="150dp"
-                    android:layout_weight="10" />
-
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/addNewImageButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:contentDescription="@string/add_new_location_button"
-                    android:src="@drawable/ic_baseline_add_24"
-                    app:fabSize="mini"
-                    app:tint="@color/white" />
-            </LinearLayout>
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="match_parent">-->
-
-            <!--                <ImageView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:contentDescription="@string/image_with_location"-->
-            <!--                    android:padding="8dp"-->
-            <!--                    android:src="@drawable/ic_launcher_background" />-->
-
-            <!--                <ImageView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:contentDescription="@string/image_with_location"-->
-            <!--                    android:padding="8dp"-->
-            <!--                    android:src="@drawable/ic_launcher_background" />-->
-
-            <!--                <ImageView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:contentDescription="@string/image_with_location"-->
-            <!--                    android:padding="8dp"-->
-            <!--                    android:src="@drawable/ic_launcher_background" />-->
-            <!--            </LinearLayout>-->
-
-        </LinearLayout>
-
-
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="2"
+            tools:listitem="@layout/location_item" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -94,6 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        app:cardCornerRadius="8dp"
         app:cardElevation="2dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -104,13 +58,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="12">
+            android:weightSum="5">
 
             <TextView
                 android:id="@+id/addNewLocationIV"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="10"
+                android:layout_weight="4.3"
+                android:padding="8dp"
                 android:text="@string/add_new_location"
                 android:textSize="16sp" />
 
@@ -118,7 +73,7 @@
                 android:id="@+id/addNewLocationButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:contentDescription="@string/add_new_location_button"
                 android:src="@drawable/ic_baseline_add_24"
                 app:fabSize="mini"

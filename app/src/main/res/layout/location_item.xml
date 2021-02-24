@@ -2,16 +2,13 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="16dp"
     android:orientation="vertical"
+    app:cardCornerRadius="8dp"
     app:cardElevation="2dp"
     app:cardUseCompatPadding="true">
-
-    <GridView
-        android:id="@+id/locationsListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,13 +19,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="12">
+            android:weightSum="5">
 
             <TextView
                 android:id="@+id/nameOflocationTV"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="10"
+                android:layout_weight="4.3"
+                android:padding="8dp"
                 android:text="@string/name_of_location"
                 android:textSize="16sp" />
 
@@ -36,40 +34,21 @@
                 android:id="@+id/addNewImageButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:contentDescription="@string/add_new_location_button"
                 android:src="@drawable/ic_baseline_add_24"
                 app:fabSize="mini"
                 app:tint="@color/white" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/image_with_location"
-                android:padding="8dp"
-                android:src="@drawable/ic_launcher_background" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/image_with_location"
-                android:padding="8dp"
-                android:src="@drawable/ic_launcher_background" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/image_with_location"
-                android:padding="8dp"
-                android:src="@drawable/ic_launcher_background" />
-        </LinearLayout>
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/imagesRV"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3"
+            tools:itemCount="4"
+            tools:listitem="@layout/image_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
-
 
 </androidx.cardview.widget.CardView>
