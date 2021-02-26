@@ -5,4 +5,5 @@
     <string name="name_of_location">Name of location</string>
     <string name="image_with_location">Image with location</string>
     <string name="name_of_section">Name of section</string>
+    <string name="delete">Delete</string>
 </resources>

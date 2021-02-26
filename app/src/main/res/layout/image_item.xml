@@ -22,16 +22,16 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/checkBoxImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="8dp"
-            android:paddingTop="8dp"
-            android:rotation="45"
             android:background="@android:color/transparent"
-            android:src="@drawable/image_button_selector"
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            android:rotation="45"
+            android:visibility="gone"
+            android:src="@drawable/red_circle_outline_24"
             app:layout_constraintEnd_toEndOf="@+id/imageOfLocationIV"
             app:layout_constraintTop_toTopOf="parent" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

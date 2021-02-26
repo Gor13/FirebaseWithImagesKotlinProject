@@ -24,6 +24,10 @@ class LocationsActivity : AppCompatActivity() {
     val storage = Firebase.storage
     private lateinit var sectionsListAdapter: SectionsListAdapter
     private lateinit var secionsRecyclerView: RecyclerView
+    private var referenceWithCurentImage = "default reference"
+
+    private lateinit var sectionWithAddableImage: Section
+    private var numberOfLocationWithAddableImage = -1
 
     // Create a storage reference from our app
     var storageRef = storage.reference
@@ -38,13 +42,7 @@ class LocationsActivity : AppCompatActivity() {
 
 
         getSectionsFromFDB()
-        // getPhotos()
         initListeners()
-        updateSection()
-    }
-
-    private fun updateSection() {
-
     }
 
     private fun initListeners() {
@@ -53,10 +51,61 @@ class LocationsActivity : AppCompatActivity() {
         }
         sectionsListAdapter.addNewLocationButtonClickListener = object : SectionsListAdapter.AddNewLocationButtonClickListener {
             override fun addNewLocationButtonClick(section: Section) {
-                Log.d(TAG, "${section}")
+                //Log.d(TAG, "${section}")
+                addNewLocationIntoSectionIntoFDB(section)
+            }
+        }
+        sectionsListAdapter.addNewImageButtonClickListener = object : SectionsListAdapter.AddNewImageButtonClickListener {
+            override fun addNewImageButtonClick(section: Section, numberOfLocation: Int) {
+                //Log.d(TAG, "${section}   $numberOfLocation")
+                sectionWithAddableImage = section
+                numberOfLocationWithAddableImage = numberOfLocation
+                getImageFromInternal()
+            }
+        }
+        sectionsListAdapter.deleteImagesButtonClickListener = object : SectionsListAdapter.DeleteImagesButtonClickListener {
+            override fun deleteImagesButtonClick(section: Section, numberOfLocation: Int, listWithNumbersOfImages: List<Int>) {
+                Log.d(TAG, "${section}   $numberOfLocation   $listWithNumbersOfImages")
+                deleteSelectedImagesFromFDB(section, numberOfLocation, listWithNumbersOfImages)
             }
 
         }
+    }
+
+    private fun deleteSelectedImagesFromFDB(section: Section, numberOfLocation: Int, listWithNumbersOfImages: List<Int>) {
+        val currentRef = db.collection("sections").document(section.id)
+        currentRef
+                .update("id", section.id,
+                        "listWithLocations", section.listWithLocations.deleteSelectedImages(numberOfLocation, listWithNumbersOfImages))
+                .addOnSuccessListener {
+                    Log.d(TAG, "DocumentSnapshot successfully updated!")
+                    getSectionsFromFDB()
+                }
+                .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+    }
+
+    private fun addNewPhotoIntoLocationIntoFDB(section: Section, numberOfLocation: Int) {
+
+        val currentRef = db.collection("sections").document(section.id)
+        currentRef
+                .update("id", section.id,
+                        "listWithLocations", section.listWithLocations.addnewImage(numberOfLocation, referenceWithCurentImage))
+                .addOnSuccessListener {
+                    Log.d(TAG, "DocumentSnapshot successfully updated!")
+                    getSectionsFromFDB()
+                }
+                .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+    }
+
+    private fun addNewLocationIntoSectionIntoFDB(section: Section) {
+        val currentRef = db.collection("sections").document(section.id)
+        currentRef
+                .update("id", section.id, "listWithLocations", section.listWithLocations.addnewLocation())
+                .addOnSuccessListener {
+                    Log.d(TAG, "DocumentSnapshot successfully updated!")
+                    getSectionsFromFDB()
+                }
+                .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -65,15 +114,15 @@ class LocationsActivity : AppCompatActivity() {
             Toast.makeText(this, "request resived $resultCode", Toast.LENGTH_LONG).show()
             data?.let {
                 Log.d(TAG, data.data.toString())
-                writeIntoFireStor(data.data)
+                writeImageIntoFireStor(data.data)
             }
         }
     }
 
-    private fun writeIntoFireStor(uri: Uri?) {
-        var file = uri
+    private fun writeImageIntoFireStor(uri: Uri?) {
+        val file = uri
         val riversRef = storageRef.child("images/${file?.lastPathSegment}")
-        var uploadTask = riversRef.putFile(file!!)
+        val uploadTask = riversRef.putFile(file!!)
 
         // Register observers to listen for when the download is done or if it fails
         uploadTask.continueWithTask { task ->
@@ -87,15 +136,18 @@ class LocationsActivity : AppCompatActivity() {
             if (task.isSuccessful) {
                 val downloadUri = task.result
                 Log.d(TAG, "$downloadUri")
+                referenceWithCurentImage = downloadUri.toString()
+                addNewPhotoIntoLocationIntoFDB(sectionWithAddableImage, numberOfLocationWithAddableImage)
             } else {
                 // Handle failures
                 // ...
+                Log.d(TAG, "Dowloading uri not complete 100")
             }
         }
 
     }
 
-    private fun getPhotos() {
+    private fun getImageFromInternal() {
         startActivityForResult(
                 Intent(Intent.ACTION_GET_CONTENT).setType("image/jpeg")
                         .putExtra(Intent.EXTRA_LOCAL_ONLY, true), RC_GET_IMAGE
@@ -128,12 +180,7 @@ class LocationsActivity : AppCompatActivity() {
     }
 
     private fun addNewSection() {
-
-        val newSection = Section("1/0", "Name of section", listOf(
-                Location("Name of Location1", listOf("image1", "image1", "image1", "image1")),
-                Location("Name of Location2", listOf("image1")),
-                Location("Name of Location3", listOf()),
-                Location("Name of Location4", listOf("image1", "image1"))))
+        val newSection = Section("1/0", "Name of section", listOf())
         // Add a new document with a generated ID
         db.collection("sections")
                 .add(newSection)
@@ -145,4 +192,28 @@ class LocationsActivity : AppCompatActivity() {
                 }
         getSectionsFromFDB()
     }
+}
+
+private fun List<Location>.deleteSelectedImages(numberOfLocation: Int, listWithNumbersOfImages: List<Int>): List<Location> {
+    val listLocations = this.toMutableList()
+    val listImages = this[numberOfLocation].listWithImages.toMutableList()
+    for (number in listWithNumbersOfImages.sorted().reversed()){
+        listImages.removeAt(number)
+    }
+    listLocations[numberOfLocation].listWithImages = listImages
+    return listLocations.toList()
+}
+
+private fun List<Location>.addnewImage(numberOfLocation: Int, referenceWithCurentImage: String): List<Location> {
+    val listLocations = this.toMutableList()
+    val listImages = this[numberOfLocation].listWithImages.toMutableList()
+    listImages.add(referenceWithCurentImage)
+    listLocations[numberOfLocation].listWithImages = listImages
+    return listLocations.toList()
+}
+
+private fun List<Location>.addnewLocation(): List<Location> {
+    val list = this.toMutableList()
+    list.add(Location("Name of location", listOf()))
+    return list.toList()
 }

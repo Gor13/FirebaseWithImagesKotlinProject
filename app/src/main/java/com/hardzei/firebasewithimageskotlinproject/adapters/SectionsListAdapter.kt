@@ -1,7 +1,7 @@
 package com.hardzei.firebasewithimageskotlinproject.adapters
 
 import android.content.Context
-import android.util.Log
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +17,22 @@ class SectionsListAdapter(private val context: Context?) :
     private var sections: List<Section> = listOf()
 
     interface AddNewLocationButtonClickListener {
-            fun addNewLocationButtonClick(section: Section)
+        fun addNewLocationButtonClick(section: Section)
     }
+
     var addNewLocationButtonClickListener: AddNewLocationButtonClickListener? = null
+
+    interface AddNewImageButtonClickListener {
+        fun addNewImageButtonClick(section: Section, numberOfLocation: Int)
+    }
+
+    var addNewImageButtonClickListener: AddNewImageButtonClickListener? = null
+
+    interface DeleteImagesButtonClickListener {
+        fun deleteImagesButtonClick(section: Section, numberOfLocation: Int, listWithNumbersOfImages: List<Int>)
+    }
+
+    var deleteImagesButtonClickListener: DeleteImagesButtonClickListener? = null
 
     fun setSections(sections: List<Section>) {
         this.sections = sections
@@ -35,13 +48,26 @@ class SectionsListAdapter(private val context: Context?) :
 
         with(holder) {
             addNewLocationButton.setOnClickListener {
-               addNewLocationButtonClickListener?.addNewLocationButtonClick(sections[position])
+                addNewLocationButtonClickListener?.addNewLocationButtonClick(sections[position])
             }
+
+
             nameOfSectionTV.text = sections[position].nameOfSection
             if (context == null) return
             val locationsListAdapter = LocationsListAdapter(context)
             locationsRV.adapter = locationsListAdapter
-            locationsListAdapter.setLocations(sections[position].listWithLocations)
+            locationsListAdapter.setLocations(sections[position].listWithLocations, sections[position])
+            locationsListAdapter.addNewImageButtonClickListener = object : LocationsListAdapter.AddNewImageButtonClickListener {
+                override fun addNewImageButtonClick(section: Section, numberOfLocation: Int) {
+                    addNewImageButtonClickListener?.addNewImageButtonClick(section, numberOfLocation)
+                }
+            }
+            locationsListAdapter.deleteImagesButtonClickListener = object : LocationsListAdapter.DeleteImagesButtonClickListener {
+                override fun deleteImagesButtonClick(section: Section, numberOfLocation: Int, listWithNumbersOfImages: List<Int>) {
+                    deleteImagesButtonClickListener?.deleteImagesButtonClick(section, numberOfLocation, listWithNumbersOfImages)
+                }
+
+            }
         }
     }
 
