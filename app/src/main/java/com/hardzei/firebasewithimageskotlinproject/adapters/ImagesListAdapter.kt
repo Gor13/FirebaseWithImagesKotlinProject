@@ -10,7 +10,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.hardzei.firebasewithimageskotlinproject.R
 import kotlinx.android.synthetic.main.image_item.view.*
 
-
 class ImagesListAdapter(private val context: Context) : RecyclerView.Adapter<ImagesListAdapter.ImagesViewHolder>() {
 
     private var images: List<String> = listOf()
@@ -36,6 +35,11 @@ class ImagesListAdapter(private val context: Context) : RecyclerView.Adapter<Ima
 
     var checkBoxImageButtonOnClickListener: CheckBoxImageButtonOnClickListener? = null
 
+    interface OnImageClickListener {
+        fun onImageClick(url: String)
+    }
+
+    var onImageClickListener: OnImageClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesViewHolder {
         val view = inflater.inflate(R.layout.image_item, parent, false)
@@ -45,14 +49,14 @@ class ImagesListAdapter(private val context: Context) : RecyclerView.Adapter<Ima
     override fun onBindViewHolder(holder: ImagesViewHolder, position: Int) {
         with(holder) {
             val options: RequestOptions = RequestOptions()
-                    .centerCrop()
-                    .placeholder(R.drawable.default_image)
-                    .error(R.drawable.default_image)
+                .centerCrop()
+                .placeholder(R.drawable.default_image)
+                .error(R.drawable.default_image)
             Glide
-                    .with(context)
-                    .load(images[position])
-                    .apply(options)
-                    .into(imageOfLocationIV)
+                .with(context)
+                .load(images[position])
+                .apply(options)
+                .into(imageOfLocationIV)
             imageOfLocationIV.isLongClickable = true
             imageOfLocationIV.isClickable = true
             checkBoxImageButton.visibility = currentVisibility
@@ -63,6 +67,9 @@ class ImagesListAdapter(private val context: Context) : RecyclerView.Adapter<Ima
                 deleteButtonOnClickListener?.deleteButtonOnClick()
                 notifyDataSetChanged()
                 true
+            }
+            imageOfLocationIV.setOnClickListener {
+                onImageClickListener?.onImageClick(images[position])
             }
             checkBoxImageButton.setOnClickListener {
                 if (listWithNumbersOfImages.contains(position)) {
