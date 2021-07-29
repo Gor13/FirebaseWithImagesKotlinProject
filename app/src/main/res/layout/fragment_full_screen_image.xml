@@ -7,4 +7,4 @@
     android:adjustViewBounds="true"
     android:background="@color/white"
     android:contentDescription="@string/image"
-    tools:context=".fragments.FullScreenImageFragment" />
+    tools:context=".view.fragments.FullScreenImageFragment" />

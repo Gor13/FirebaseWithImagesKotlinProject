@@ -1,4 +1,4 @@
-package com.hardzei.firebasewithimageskotlinproject.fragments
+package com.hardzei.firebasewithimageskotlinproject.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

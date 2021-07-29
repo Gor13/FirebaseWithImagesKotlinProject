@@ -1,4 +1,4 @@
-package com.hardzei.firebasewithimageskotlinproject.adapters
+package com.hardzei.firebasewithimageskotlinproject.view.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,9 +8,9 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.hardzei.firebasewithimageskotlinproject.Location
 import com.hardzei.firebasewithimageskotlinproject.R
-import com.hardzei.firebasewithimageskotlinproject.Section
+import com.hardzei.firebasewithimageskotlinproject.pojo.Location
+import com.hardzei.firebasewithimageskotlinproject.pojo.Section
 import kotlinx.android.synthetic.main.location_item.view.*
 
 class LocationsListAdapter(private val context: Context) :

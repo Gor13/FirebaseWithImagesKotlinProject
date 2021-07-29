@@ -1,4 +1,4 @@
-package com.hardzei.firebasewithimageskotlinproject.adapters
+package com.hardzei.firebasewithimageskotlinproject.view.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -16,6 +16,10 @@ class ImagesListAdapter(private val context: Context) : RecyclerView.Adapter<Ima
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     var currentVisibility = View.GONE
     private val listWithNumbersOfImages = mutableListOf<Int>()
+    val options: RequestOptions = RequestOptions()
+        .centerCrop()
+        .placeholder(R.drawable.default_image)
+        .error(R.drawable.default_image)
 
     fun setImages(images: List<String>) {
         this.images = images
@@ -48,10 +52,6 @@ class ImagesListAdapter(private val context: Context) : RecyclerView.Adapter<Ima
 
     override fun onBindViewHolder(holder: ImagesViewHolder, position: Int) {
         with(holder) {
-            val options: RequestOptions = RequestOptions()
-                .centerCrop()
-                .placeholder(R.drawable.default_image)
-                .error(R.drawable.default_image)
             Glide
                 .with(context)
                 .load(images[position])

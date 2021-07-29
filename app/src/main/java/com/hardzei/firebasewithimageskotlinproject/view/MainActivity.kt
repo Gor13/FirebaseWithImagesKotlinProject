@@ -1,8 +1,9 @@
-package com.hardzei.firebasewithimageskotlinproject
+package com.hardzei.firebasewithimageskotlinproject.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.hardzei.firebasewithimageskotlinproject.fragments.LocationsFragment
+import com.hardzei.firebasewithimageskotlinproject.R
+import com.hardzei.firebasewithimageskotlinproject.view.fragments.LocationsFragment
 
 private const val NAME_STACK_FOR_ACTIVITY = "NAME_STACK_FOR_ACTIVITY"
 

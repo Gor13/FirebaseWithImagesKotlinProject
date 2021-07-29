@@ -1,8 +1,6 @@
-package com.hardzei.firebasewithimageskotlinproject.adapters
+package com.hardzei.firebasewithimageskotlinproject.view.adapters
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +9,15 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
 import androidx.recyclerview.widget.RecyclerView
 import com.hardzei.firebasewithimageskotlinproject.R
-import com.hardzei.firebasewithimageskotlinproject.Section
+import com.hardzei.firebasewithimageskotlinproject.pojo.Section
 import kotlinx.android.synthetic.main.section_item.view.*
 
-class SectionsListAdapter(private val context: Context?) :
+class SectionsListAdapter(private val context: Context) :
     RecyclerView.Adapter<SectionsListAdapter.SectionViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var sections: List<Section> = listOf()
+    private lateinit var locationsListAdapter: LocationsListAdapter
 
     interface AddNewLocationButtonClickListener {
         fun addNewLocationButtonClick(section: Section)
@@ -57,6 +56,7 @@ class SectionsListAdapter(private val context: Context?) :
     interface OnImageClickListener {
         fun onImageClick(url: String)
     }
+
     var onImageClickListener: OnImageClickListener? = null
 
     fun setSections(sections: List<Section>) {
@@ -93,8 +93,7 @@ class SectionsListAdapter(private val context: Context?) :
                     false
                 }
             )
-            if (context == null) return
-            val locationsListAdapter = LocationsListAdapter(context)
+            locationsListAdapter = LocationsListAdapter(context)
             locationsRV.adapter = locationsListAdapter
             locationsListAdapter.setLocations(
                 sections[position].listWithLocations,
@@ -123,20 +122,26 @@ class SectionsListAdapter(private val context: Context?) :
                         )
                     }
                 }
-            locationsListAdapter.changeNameOfLocationClickListener = object : LocationsListAdapter.ChangeNameOfLocationClickListener {
-                override fun nameChangedButtonClick(
-                    section: Section,
-                    numberOfLocation: Int,
-                    changedText: String
-                ) {
-                    changeNameOfLocationClickListener?.nameChangedButtonClick(section, numberOfLocation, changedText)
+            locationsListAdapter.changeNameOfLocationClickListener =
+                object : LocationsListAdapter.ChangeNameOfLocationClickListener {
+                    override fun nameChangedButtonClick(
+                        section: Section,
+                        numberOfLocation: Int,
+                        changedText: String
+                    ) {
+                        changeNameOfLocationClickListener?.nameChangedButtonClick(
+                            section,
+                            numberOfLocation,
+                            changedText
+                        )
+                    }
                 }
-            }
-            locationsListAdapter.onImageClickListener = object : LocationsListAdapter.OnImageClickListener {
-                override fun onImageClick(url: String) {
-                    onImageClickListener?.onImageClick(url)
+            locationsListAdapter.onImageClickListener =
+                object : LocationsListAdapter.OnImageClickListener {
+                    override fun onImageClick(url: String) {
+                        onImageClickListener?.onImageClick(url)
+                    }
                 }
-            }
         }
     }
 
