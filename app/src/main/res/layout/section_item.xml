@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:layout_height="wrap_content">
+    android:focusableInTouchMode="true">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -18,31 +18,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="12dp"
-        android:layout_margin="8dp"
-        app:cardElevation="-12dp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <EditText
-            android:id="@+id/nameOfSectionET"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:background="#edf3f4"
-            android:padding="16dp"
-            android:inputType="text"
-            android:imeOptions="actionDone"
-            android:text="@string/name_of_section"
-            android:textSize="18sp" />
-    </androidx.cardview.widget.CardView>
+            android:layout_margin="8dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="-12dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/nameOfSectionET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#edf3f4"
+                android:gravity="center_horizontal"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:padding="16dp"
+                android:text="@string/name_of_section"
+                android:textSize="18sp" />
+        </androidx.cardview.widget.CardView>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -80,6 +79,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:orientation="horizontal"
             android:weightSum="5">
 
@@ -103,8 +103,6 @@
                 app:tint="@color/white" />
         </LinearLayout>
 
-
     </androidx.cardview.widget.CardView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

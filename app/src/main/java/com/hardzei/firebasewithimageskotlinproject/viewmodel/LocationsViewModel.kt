@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.hardzei.firebasewithimageskotlinproject.MainContract
-import com.hardzei.firebasewithimageskotlinproject.db.Faild
+import com.hardzei.firebasewithimageskotlinproject.db.Failed
 import com.hardzei.firebasewithimageskotlinproject.db.Result
 import com.hardzei.firebasewithimageskotlinproject.db.Success
 import com.hardzei.firebasewithimageskotlinproject.pojo.Section
@@ -59,28 +59,28 @@ class LocationsViewModel @Inject constructor(
     override fun onReadSectionsFinished(result: Result) {
         when (result) {
             is Success -> _listWithSections.value = result.listWithSections
-            is Faild -> _errorMessage.value = result.errorMessage
+            is Failed -> _errorMessage.value = result.errorMessage
         }
     }
 
     override fun onCreateFinished(result: Result) {
         when (result) {
             is Success -> _successMessage.value = "Success"
-            is Faild -> _successMessage.value = "Faild ${result.errorMessage}"
+            is Failed -> _successMessage.value = "Failed ${result.errorMessage}"
         }
     }
 
     override fun onUpdateFinished(result: Result) {
         when (result) {
             is Success -> _successMessage.value = "Success"
-            is Faild -> _successMessage.value = "Faild ${result.errorMessage}"
+            is Failed -> _successMessage.value = "Failed ${result.errorMessage}"
         }
     }
 
     override fun onDeleteFinished(result: Result) {
         when (result) {
             is Success -> _successMessage.value = "Success"
-            is Faild -> _successMessage.value = "Faild ${result.errorMessage}"
+            is Failed -> _successMessage.value = "Failed ${result.errorMessage}"
         }
     }
 

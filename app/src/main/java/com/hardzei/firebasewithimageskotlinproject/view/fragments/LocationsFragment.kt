@@ -22,6 +22,7 @@ import com.hardzei.firebasewithimageskotlinproject.di.component.DaggerActivityCo
 import com.hardzei.firebasewithimageskotlinproject.di.module.VMModule
 import com.hardzei.firebasewithimageskotlinproject.pojo.Section
 import com.hardzei.firebasewithimageskotlinproject.utils.Create
+import com.hardzei.firebasewithimageskotlinproject.utils.Delete
 import com.hardzei.firebasewithimageskotlinproject.utils.Read
 import com.hardzei.firebasewithimageskotlinproject.utils.Update
 import com.hardzei.firebasewithimageskotlinproject.view.adapters.SectionsListAdapter
@@ -74,7 +75,6 @@ class LocationsFragment : Fragment(), MainContract.ViewCallBack {
         locationsViewModel.listWithSections.observe(
             viewLifecycleOwner,
             Observer {
-                Log.d(TAG, "data getted!!!!!!!!! --- $it")
                 sectionsListAdapter.setSections(it)
             }
         )
@@ -120,8 +120,14 @@ class LocationsFragment : Fragment(), MainContract.ViewCallBack {
                     numberOfLocation: Int,
                     listWithNumbersOfImages: List<Int>
                 ) {
-                    // Log.d(TAG, "${section}   $numberOfLocation   $listWithNumbersOfImages")
-// 3                    deleteSelectedImagesFromFDB(section, numberOfLocation, listWithNumbersOfImages)
+                    Log.d(TAG, "$section   $numberOfLocation   $listWithNumbersOfImages")
+                    locationsViewModel.deletePhotos(
+                        Delete(
+                            section,
+                            numberOfLocation,
+                            listWithNumbersOfImages
+                        )
+                    )
                 }
             }
         sectionsListAdapter.changeNameOfSectionClickListener =
@@ -137,7 +143,13 @@ class LocationsFragment : Fragment(), MainContract.ViewCallBack {
                     numberOfLocation: Int,
                     changedText: String
                 ) {
-                    locationsViewModel.updateLocationName(Update(section, numberOfLocation, changedText))
+                    locationsViewModel.updateLocationName(
+                        Update(
+                            section,
+                            numberOfLocation,
+                            changedText
+                        )
+                    )
                 }
             }
         sectionsListAdapter.onImageClickListener =

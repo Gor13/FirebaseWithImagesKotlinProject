@@ -6,7 +6,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.hardzei.firebasewithimageskotlinproject.MainContract
 import com.hardzei.firebasewithimageskotlinproject.TAG
-import com.hardzei.firebasewithimageskotlinproject.db.Faild
+import com.hardzei.firebasewithimageskotlinproject.db.Failed
 import com.hardzei.firebasewithimageskotlinproject.db.Success
 import com.hardzei.firebasewithimageskotlinproject.pojo.Location
 import com.hardzei.firebasewithimageskotlinproject.pojo.Section
@@ -53,7 +53,7 @@ class FirebaseDatabase : MainContract.BaseDatabase() {
             .addOnFailureListener { exception ->
                 Log.d(TAG + "${this.javaClass.name}: ", "Error getting documents.", exception)
                 exception.message?.let {
-                    onReadFinishedListener.onReadFinished(Faild(it))
+                    onReadFinishedListener.onReadFinished(Failed(it))
                 }
             }
     }
@@ -73,7 +73,7 @@ class FirebaseDatabase : MainContract.BaseDatabase() {
             .addOnFailureListener { exception ->
                 Log.d(TAG + "${this.javaClass.name}: ", "Error adding document: ", exception)
                 exception.message?.let {
-                    onCreateFinishedListener.onCreateFinished(Faild(it))
+                    onCreateFinishedListener.onCreateFinished(Failed(it))
                 }
             }
     }
@@ -109,7 +109,7 @@ class FirebaseDatabase : MainContract.BaseDatabase() {
                                 exception
                             )
                             exception.message?.let {
-                                onCreateFinishedListener.onCreateFinished(Faild(it))
+                                onCreateFinishedListener.onCreateFinished(Failed(it))
                             }
                         }
                 }
@@ -155,7 +155,7 @@ class FirebaseDatabase : MainContract.BaseDatabase() {
                     exception
                 )
                 exception.message?.let {
-                    onCreateFinishedListener.onCreateFinished(Faild(it))
+                    onCreateFinishedListener.onCreateFinished(Failed(it))
                 }
             }
     }
@@ -185,7 +185,7 @@ class FirebaseDatabase : MainContract.BaseDatabase() {
                 createPhotoInFirestore(onCreateFinishedListener, request, downloadUri.toString())
             } else {
                 Log.d(TAG + "${this.javaClass.name}: ", "Dowloading uri not complete 2006")
-                onCreateFinishedListener.onCreateFinished(Faild("Dowloading uri not complete 2006"))
+                onCreateFinishedListener.onCreateFinished(Failed("Dowloading uri not complete 2006"))
             }
         }
     }
@@ -214,7 +214,7 @@ class FirebaseDatabase : MainContract.BaseDatabase() {
                     exception
                 )
                 exception.message?.let {
-                    onUpdateFinishedListener.onUpdateFinished(Faild(it))
+                    onUpdateFinishedListener.onUpdateFinished(Failed(it))
                 }
             }
     }
@@ -248,7 +248,7 @@ class FirebaseDatabase : MainContract.BaseDatabase() {
                     exception
                 )
                 exception.message?.let {
-                    onUpdateFinishedListener.onUpdateFinished(Faild(it))
+                    onUpdateFinishedListener.onUpdateFinished(Failed(it))
                 }
             }
     }
@@ -285,7 +285,7 @@ class FirebaseDatabase : MainContract.BaseDatabase() {
                     exception
                 )
                 exception.message?.let {
-                    onDeleteFinishedListener.onDeleteFinished(Faild(it))
+                    onDeleteFinishedListener.onDeleteFinished(Failed(it))
                 }
             }
     }
