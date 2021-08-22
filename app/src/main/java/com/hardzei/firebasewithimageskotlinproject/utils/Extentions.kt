@@ -24,7 +24,7 @@ fun List<Location>.deleteSelectedImages(
     return listLocations.toList()
 }
 
-fun List<Location>.addnewImage(
+fun List<Location>.addNewImage(
     numberOfLocation: Int,
     referenceWithCurentImage: String
 ): List<Location> {
@@ -35,7 +35,7 @@ fun List<Location>.addnewImage(
     return listLocations.toList()
 }
 
-fun List<Location>.addnewLocation(): List<Location> {
+fun List<Location>.addNewLocation(): List<Location> {
     val list = this.toMutableList()
     list.add(Location("Name of location", listOf()))
     return list.toList()

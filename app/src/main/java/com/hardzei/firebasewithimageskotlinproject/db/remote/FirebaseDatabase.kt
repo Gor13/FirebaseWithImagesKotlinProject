@@ -14,8 +14,8 @@ import com.hardzei.firebasewithimageskotlinproject.utils.Create
 import com.hardzei.firebasewithimageskotlinproject.utils.Delete
 import com.hardzei.firebasewithimageskotlinproject.utils.Request
 import com.hardzei.firebasewithimageskotlinproject.utils.Update
-import com.hardzei.firebasewithimageskotlinproject.utils.addnewImage
-import com.hardzei.firebasewithimageskotlinproject.utils.addnewLocation
+import com.hardzei.firebasewithimageskotlinproject.utils.addNewImage
+import com.hardzei.firebasewithimageskotlinproject.utils.addNewLocation
 import com.hardzei.firebasewithimageskotlinproject.utils.changeLocationName
 import com.hardzei.firebasewithimageskotlinproject.utils.deleteSelectedImages
 
@@ -92,7 +92,7 @@ class FirebaseDatabase : MainContract.BaseDatabase() {
                             "id",
                             section.id,
                             "listWithLocations",
-                            section.listWithLocations.addnewLocation()
+                            section.listWithLocations.addNewLocation()
                         )
                         .addOnSuccessListener {
                             Log.d(
@@ -142,7 +142,7 @@ class FirebaseDatabase : MainContract.BaseDatabase() {
                 "id",
                 section.id,
                 "listWithLocations",
-                section.listWithLocations.addnewImage(numberOfLocation, referenceWithCurrentImage)
+                section.listWithLocations.addNewImage(numberOfLocation, referenceWithCurrentImage)
             )
             .addOnSuccessListener {
                 Log.d(TAG + "${this.javaClass.name}: ", "DocumentSnapshot successfully updated!")

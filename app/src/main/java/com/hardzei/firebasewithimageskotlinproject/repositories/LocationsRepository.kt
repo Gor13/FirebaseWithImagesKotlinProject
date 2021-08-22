@@ -1,7 +1,5 @@
 package com.hardzei.firebasewithimageskotlinproject.repositories
 
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.hardzei.firebasewithimageskotlinproject.MainContract
 import com.hardzei.firebasewithimageskotlinproject.db.Result
 import com.hardzei.firebasewithimageskotlinproject.utils.Remote
@@ -12,16 +10,10 @@ class LocationsRepository constructor(
     private val remoteDatabase: MainContract.BaseDatabase
 ) : MainContract.BaseRepository() {
 
-    private val firebaseDB = Firebase.firestore
-
-    private var onReadFinishedListener: MainContract.RepositoryCallBack.OnReadFinishedListener? =
-        null
-    private var onCreateFinishedListener: MainContract.RepositoryCallBack.OnCreateFinishedListener? =
-        null
-    private var onUpdateFinishedListener: MainContract.RepositoryCallBack.OnUpdateFinishedListener? =
-        null
-    private var onDeleteFinishedListener: MainContract.RepositoryCallBack.OnDeleteFinishedListener? =
-        null
+    private lateinit var onReadFinishedListener: MainContract.RepositoryCallBack.OnReadFinishedListener
+    private lateinit var onCreateFinishedListener: MainContract.RepositoryCallBack.OnCreateFinishedListener
+    private lateinit var onUpdateFinishedListener: MainContract.RepositoryCallBack.OnUpdateFinishedListener
+    private lateinit var onDeleteFinishedListener: MainContract.RepositoryCallBack.OnDeleteFinishedListener
 
     override fun readSectionsFromDB(onReadFinishedListener: MainContract.RepositoryCallBack.OnReadFinishedListener) {
         remoteDatabase.readSections(this)
@@ -29,7 +21,7 @@ class LocationsRepository constructor(
     }
 
     override fun onReadFinished(result: Result) {
-        onReadFinishedListener?.onReadSectionsFinished(result)
+        onReadFinishedListener.onReadSectionsFinished(result)
     }
 
     override fun createSectionInDB(onCreateFinishedListener: MainContract.RepositoryCallBack.OnCreateFinishedListener) {
@@ -54,7 +46,7 @@ class LocationsRepository constructor(
     }
 
     override fun onCreateFinished(result: Result) {
-        onCreateFinishedListener?.onCreateFinished(result)
+        onCreateFinishedListener.onCreateFinished(result)
     }
 
     override fun updateSectionNameInDB(
@@ -74,7 +66,7 @@ class LocationsRepository constructor(
     }
 
     override fun onUpdateFinished(result: Result) {
-        onUpdateFinishedListener?.onUpdateFinished(result)
+        onUpdateFinishedListener.onUpdateFinished(result)
     }
 
     override fun deletePhotosInDB(
@@ -86,6 +78,6 @@ class LocationsRepository constructor(
     }
 
     override fun onDeleteFinished(result: Result) {
-        onDeleteFinishedListener?.onDeleteFinished(result)
+        onDeleteFinishedListener.onDeleteFinished(result)
     }
 }
